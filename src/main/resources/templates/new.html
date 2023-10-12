@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>New User</title>
+</head>
+<body>
+<div align="center">
+    <h2>New User</h2>
+    <form th:action="@{/new}" th:object="${user}" method="POST">
+        <fieldset style="width: 300px;">
+            <p>
+                <label th:for="firstName">Name: </label>
+                <input type="text" name="name" th:id="firstName" th:value="${user.getName()}">
+            </p>
+            <p>
+                <label th:for="lastName">Surname:</label>
+                <input type="text" name="surname" th:id="lastName" th:value="${user.getSurname()}">
+            </p>
+            <p>
+                <label th:for="email">Email: </label>
+                <input type="text" name="email" th:id="email" th:value="${user.getEmail()}">
+            </p>
+        </fieldset>
+        <button type="submit">Save</button>
+    </form>
+    <br/>
+</div>
+</body>
+</html>
