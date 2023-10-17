@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+//Этот объект используется для обработки юзера после успешной аунтентификации: Перебрасывает юзера, в зависимости от роли
+// на указанные страницы, и можно дополнительно настроить еще всякие штуки
 @Component
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
     // Spring Security использует объект Authentication, пользователя авторизованной сессии.
@@ -18,8 +20,8 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         if (roles.contains("ROLE_USER")) {
             httpServletResponse.sendRedirect("/user");
-        } else {
-            httpServletResponse.sendRedirect("/");
-        }
+        } else if (roles.contains("ROLE_ADMIN")) {
+            httpServletResponse.sendRedirect("/admin");
+        } //TODO
     }
 }

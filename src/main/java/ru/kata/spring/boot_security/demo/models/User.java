@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.models;
 
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 public class User {
@@ -11,21 +12,28 @@ public class User {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "username")
+    private String username;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "email")
     private String email;
+
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Collection<Role> roles;
+
 
     public User() {
     }
 
     public User(String name, String surname, String email) {
-        this.name = name;
-        this.surname = surname;
+        this.username = name;
+        this.password = surname;
         this.email = email;
     }
 
@@ -37,20 +45,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setPassword(String surname) {
+        this.password = surname;
     }
 
     public String getEmail() {
@@ -59,5 +67,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
