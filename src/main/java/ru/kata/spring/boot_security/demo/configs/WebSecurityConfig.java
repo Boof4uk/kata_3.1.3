@@ -9,9 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.services.UserDetailsServiceImp;
 
 @Configuration
 //Это аннотация говорит о том, что требуется включить авторизацию при переходе на страницы
@@ -20,11 +19,11 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 //конфигурационного класса
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
-    private UserService userService;
+    private UserDetailsServiceImp userService;
 
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsServiceImp userService) {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
     }
@@ -49,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // аутентификация inMemory
     @Bean
     @Override
-    public UserDetailsService userDetailsService() {
+    public org.springframework.security.core.userdetails.UserDetailsService userDetailsService() {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
                         .username("user")

@@ -1,12 +1,13 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.services.UserServiceImp;
 
 import java.util.List;
 
@@ -14,18 +15,22 @@ import java.util.List;
 //на адреса указанные в гет\пост запросах
 @Controller
 public class UsersController {
-	private final UserService userService;
-
-	//Для того, чтобы мы могли взаимодействовать с моделями, нам нужно заинжектить UserService
-	//контроллер - юзерсервис - репозиторий - модель - бд
+	private final UserServiceImp userServiceImp;
+	private final UserDetailsService userDetailsService;
+	//Для того, чтобы мы могли взаимодействовать с моделями, нам нужно заинжектить UserServiceImp
+	//контроллер - юзерсервис - репозиторий - модель - бд.
+	//
 	@Autowired
-	public UsersController (UserService userService)
-	{this.userService = userService;}
+	public UsersController (UserDetailsService userDetailsService, UserServiceImp userServiceImp) {
+		this.userDetailsService = userDetailsService;
+		this.userServiceImp = userServiceImp;
+
+	}
 
 	//Домашняя страница
 	@GetMapping("/")
 	public ModelAndView home() {
-		List<User> users = userService.getUserTable();
+		List<User> users = userServiceImp.findAll();
 		ModelAndView mav = new ModelAndView("index");
 		mav.addObject("users", users);
 		return mav;
@@ -42,7 +47,7 @@ public class UsersController {
 	//Доступна админу
 	@PostMapping("/new")
 	public String create(@ModelAttribute("user") User user) {
-		userService.addUser(user);
+		userServiceImp.saveUser(user);
 		return "redirect:/";
 	}
 
@@ -50,14 +55,14 @@ public class UsersController {
 	//Доступна админу
 	@GetMapping("/{id}/edit")
 	public String editUser(Model model, @PathVariable("id") int id) {
-		model.addAttribute("user", userService.findUser(id));
+		model.addAttribute("user", userServiceImp.findUserById(id));
 		return "/edit";
 	}
 
 	//Частичный пост запрос для того, чтобы обновить данные со страницы гетзапроса обновления юзера
 	@PatchMapping("/{id}")
-	public String update(@ModelAttribute("user") User user) {
-		userService.updateUser(user);
+	public String update(@ModelAttribute("user") User user, @PathVariable("id") int id) {
+		userServiceImp.updateUser(user, id);
 		return "redirect:/admin";
 	}
 
@@ -65,7 +70,7 @@ public class UsersController {
 	//Доступна админу
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") int id) {
-		userService.deleteUser(id);
+		userServiceImp.deleteUser(id);
 		return "redirect:/admin";
 	}
 
