@@ -14,8 +14,10 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+//Этот класс нужен для того, чтобы отдать SpringSec UserDetails в кфг
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
@@ -25,26 +27,15 @@ public class UserDetailsServiceImp implements UserDetailsService {
     UserDetailsServiceImp(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
     @Override
     @Transactional
+    //SpringSec ищет данный метод и передает на сверку юзернэйм, если он есть и все ок,
+    // то мы возвращаем ему UserDetails
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findUserByUsername(username);
-        if (user == null) {
+        Optional<User> userDb = userRepository.findByUsername(username);
+        if (userDb.isEmpty()) {
             throw new UsernameNotFoundException(String.format("Пользователя с ником '%s', нет в базе", username));
         }
-        return new org.springframework.security.core.userdetails.
-                User(
-                user.getUsername(),
-                user.getPassword(),
-                mapRolesToAuthority(user.getRoles()));
-    }
-
-    //Этот метод нужен для конвертации ролей в authorities, так как в
-    // методе loadUserByUsername в конвертации user в userDetails нужен список прав, а не ролей(Хоть они и эквивалентны)
-    private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
-        return roles.stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
+        return userDb.get();
     }
 }

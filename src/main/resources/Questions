@@ -1,0 +1,43 @@
+
+//Когда применять UserDetails когда UserDetailsService
+
+@Transactional для чего
+
+Что нам дает GrantedAuthority интерфейс и почему мы его реализовываем в моделе
+
+Почему мы реализовываем UserDetails в модели
+
+@ManyToMany(fetch = FetchType.EAGER)
+
+ private List<Role> roles = new ArrayList<>(); - зачем сразу иниц
+
+  return user.get(); - 36 строка usdetiserv Как мы вернем UserDetails (Скорее всего, потому что USer реализует UserDetails)
+
+почему мы везде передаем PasswordEncoder
+
+Как в UserServiceImp мы используем метод findById, если UserRep не реализует тот интерфейс?
+
+userDb.setRoles((List<Role>) userUpd.getAuthorities()); - почему мы не можем использовать просто userUpd.getRoles
+
+Почему в методе update UserServImp мы не можем сократить запись
+
+Model, PathVariable
+
+model.addAttribute("roles", user.getRoles()); - зачем добавлять атрибут ролей, если мы можем их получить из юзера в самом th из уже добавленного туда в атрибуте юзера
+
+model.addAttribute("userRoles", roleService.findAll()); для чего в контроллере в апдейт нам эта строка
+
+зачем вообще нужен roleService и его инжекторы
+
+public String updateUser(@ModelAttribute("user") User updateUser -для чего нужен @ModelAtribute, чем отличается от MOdel model
+
+public String addNewUser(Model model, User user) зачем нам здесь User user
+
+ @GetMapping("/user_profile") для чего тут нуже принципал?
+
+ Какая цепочка действий при получении запроса на контроллер (Как работает метод и аргументы в нем?)
+
+
+
+РАЗОБРАТЬСЯ С КОНТРОЛЛЕРАМИ, ВЬЮШКАМИ, ИНИТ КЛАССОМ, КФГ?
+
