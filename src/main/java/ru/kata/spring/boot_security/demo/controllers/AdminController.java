@@ -41,11 +41,13 @@ public class AdminController {
     public String editUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.findUserById(id));
         model.addAttribute("userRoles", roleService.findAll());
+        System.out.println("Запрос получен на гет method (editUser)");
         return "edit";
     }
 
-    @PatchMapping("/update/{id]")
+    @PatchMapping("/update/{id}")
     public String updateUser(@ModelAttribute("user") User updUser, @PathVariable("id") Long id) {
+        System.out.println("Запрос перенаправлен на patch method");
         userService.updateUser(updUser, id);
         return "redirect:/admin";
     }

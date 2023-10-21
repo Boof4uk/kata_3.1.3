@@ -5,22 +5,33 @@
     <meta charset="UTF-8">
     <title>Update User</title>
 </head>
-<body>
+    <body>
+        <form th:method="PATCH" th:action="@{/admin/update/{id}(id=${user.id})}" th:object="${user}">
+            <input type="hidden" name="method" value="PATCH" />
+                <div class="main block">
+                    <h3>Edit user</h3>
+                    <div class="field">
+                        <label for="username">Username</label>
+                        <input type="text" th:field="*{username}" id="username"/>
+                    </div>
 
-<form align="center" th:method="PATCH" th:object="${user}" th:action="@{/{id}(id=${user.getId()})}">
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="text" th:field="*{password}" id="password"/>
+                    </div>
+                    <div class="field">
 
-    <label for="name">Name: </label>
-    <input type="text" th:field="*{name}" id="name"/>
-
-    <label for="surname">Surname: </label>
-    <input type="text" th:field="*{surname}" id="surname"/>
-
-    <label for="email">Email:</label>
-    <input type="text" th:field="*{email}" id="email"/>
-
-    <br/>
-    <input type="submit" value="Update"/>
-</form>
-
-</body>
+                        <label>Roles:
+                            <input type="checkbox" name="roles"
+                                   th:each="role: ${userRoles}"
+                                   th:text="${role.getRole()}"
+                                   th:value="${role.getId()}"
+                                   th:field="*{roles}"/>
+                        </label>
+                    </div>
+                    <br/>
+                <input type="submit" value="Submit"/>
+                </div>
+        </form>
+    </body>
 </html>

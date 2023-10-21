@@ -37,6 +37,13 @@ public String addNewUser(Model model, User user) зачем нам здесь Us
 
  Какая цепочка действий при получении запроса на контроллер (Как работает метод и аргументы в нем?)
 
+<form th:method="PATCH" th:action="@{/update/{id}(id=${user.getId()})}" th:object="${user}">
+
+Разобравться с DatabasaeInit
+
+Разобраться с application.properties
+
+List<Role> userRoles = Arrays.asList(userRole); зачем мы переводим userRole в лист, если он и так сохраняется внего?
 
 
 РАЗОБРАТЬСЯ С КОНТРОЛЛЕРАМИ, ВЬЮШКАМИ, ИНИТ КЛАССОМ, КФГ?

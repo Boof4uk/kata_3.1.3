@@ -74,6 +74,7 @@ public class UserServiceImp implements UserService{
             userDb.setPassword(passwordEncoder.encode(userUpd.getPassword()));
             userRepository.save(userDb);
         }
+        System.out.println(userDb.toString());
         userRepository.save(userDb);
     }
 }

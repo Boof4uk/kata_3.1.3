@@ -29,11 +29,11 @@ public class UsersController {
 	 мы можем вызвать принципал из любого места кода, так как он есть в контексте(в текущей сессии пользователя)
 	 Полагаю, что модель тоже
 	*/
-    @GetMapping("/user_profile")
+    @GetMapping()
 	public String showUserAcc(Model model, Principal principal) {
 		User user = userService.findByUsername(principal.getName());
 		model.addAttribute("user", user);
-		model.addAttribute("roles", user.getAuthorities()); //
+		model.addAttribute("userRoles", user.getAuthorities()); //
 		return "user_profile";
 	}
 }
